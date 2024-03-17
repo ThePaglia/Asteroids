@@ -129,6 +129,25 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="entity.h" />
+    <ClInclude Include="geometry.h" />
+    <ClInclude Include="hermite.h" />
+    <ClInclude Include="hermiteFromFile.h" />
+    <ClInclude Include="lib.h" />
+    <ClInclude Include="ShaderMaker.h" />
+    <ClInclude Include="textCreator.h" />
+    <ClInclude Include="VAO_manager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="entity.cpp" />
+    <ClCompile Include="geometry.cpp" />
+    <ClCompile Include="hermite.cpp" />
+    <ClCompile Include="hermiteFromFile.cpp" />
+    <ClCompile Include="ShaderMaker.cpp" />
+    <ClCompile Include="textCreator.cpp" />
+    <ClCompile Include="VAO_manager.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets" Condition="Exists('packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets')" />

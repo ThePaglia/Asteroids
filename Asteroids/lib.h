@@ -9,11 +9,11 @@
 #include "ShaderMaker.h"
 #include "geometry.h"
 #include "VAO_manager.h"
-#include "shape_reader.h"
+#include "hermiteFromFile.h"
 #include "hermite.h"
 #include "entity.h"
-#include "interactions.h"
-#include "scene_builder.h"
+#include "interaction.h"
+#include "enviromentCreator.h"
 #include "textCreator.h"
 
 using namespace glm;

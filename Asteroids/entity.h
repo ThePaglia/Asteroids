@@ -37,12 +37,15 @@ public:
 	float yShiftValue;		  // Valore di traslazione per la y
 	float xScaleValue;		  // Valore di scalatura per la x
 	float yScaleValue;		  // Valore di scalatura per la y
+	float dx;
+	float dy;
 	float angle;			  // Valore di rotazione
 	bool backgroundComponent; // true se fa parte dello sfondo, false altrimenti
 	bool alive;				  // true se l'entit� � viva, false altrimenti
 
 public:
 	Entity();
+	virtual ~Entity() {}
 	void createPolygonalShape(vector<vec3> polygonVertices, vec4 color1, vec4 color2);
 	void createHermiteShape(vector<vec3> controlPoints, vec3 center, vec4 color1, vec4 color2);
 	void initVAO();
@@ -58,12 +61,16 @@ public:
 	float getYShiftValue();
 	float getXScaleValue();
 	float getYScaleValue();
-	float getangle();
+	float getAngle();
 	void setXShiftValue(float value);
 	void setYShiftValue(float value);
 	void setXScaleValue(float value);
 	void setYScaleValue(float value);
-	void setangle(float value);
+	float getDx();
+	float getDy();
+	void setDx(float value);
+	void setDy(float value);
+	void setAngle(float value);
 	Hitbox getHitbox();
 	float getWidth();
 	float getHeight();
@@ -72,40 +79,37 @@ public:
 	void changePane();
 	void die();
 	bool isAlive();
+	void updatePosition();
 };
 
 class Spaceship : public Entity
 {
 private:
 	float size;
-	vector<Projectile*> projectiles;
 
 public:
 	Spaceship();
-	vector<Projectile*> getProjectiles();
-	void updatePosition();
 	float getSize();
-	float setSize(float value);
+	void setSize(float value);
 	void shoot();
-	void removeProjectile(int index);
-	void die();
+	void rotateHitbox();
 };
 
 class Projectile : public Entity
 {
-private:
-	float m;
-	float xShift;
-	float yShift;
-
 public:
 	Projectile(float x, float y, float angle);
-	void updatePosition();
+	bool isInScreen();
+	void changeStatus();
 };
 
 class Asteroid : public Entity
 {
+private:
+	bool isSplit;
+
 public:
+	Asteroid();
 	void split();
-	void updatePosition();
+	bool getIsSplit();
 };

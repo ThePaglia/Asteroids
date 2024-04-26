@@ -63,8 +63,20 @@ void create_butterfly(float cx, float cy, float rx, float ry, Shape* shape, vec4
 vector<vec3> createTriangle(float size)
 {
 	vector<vec3> vertices;
-	vertices.push_back(vec3(0.0f, size, 0.0f));
-	vertices.push_back(vec3(-size, -size, 0.0f));
-	vertices.push_back(vec3(size, -size, 0.0f));
+	vertices.push_back(vec3(0.0f, 0.0f, 0.0f));
+	vertices.push_back(vec3(-size / 2, -size, 0.0f));
+	vertices.push_back(vec3(size / 2, -size, 0.0f));
+	return vertices;
+}
+
+// crea un rettangolo
+vector<vec3> createRectangle(float width, float height)
+{
+	vector<vec3> vertices;
+	vertices.push_back(vec3(width / 2, -height / 2, 0.0f));
+	vertices.push_back(vec3(width / 2, height / 2, 0.0f));
+	vertices.push_back(vec3(-width / 2, height / 2, 0.0f));
+	vertices.push_back(vec3(-width / 2, -height / 2, 0.0f));
+	vertices.push_back(vec3(width / 2, -height / 2, 0.0f));
 	return vertices;
 }

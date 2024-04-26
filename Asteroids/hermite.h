@@ -14,7 +14,3 @@ float dy(int i, float* t, float tens, float bias, float cont, Shape* shape);
 float DX(int i, float* t, Shape* d, Shape* p);
 
 float DY(int i, float* t, Shape* d, Shape* p);
-
-void hermite_interpolation(float* t, Shape* shape, vec4 color_top, vec4 color_bot, Shape* tan, Shape* d, Shape* p, bool tg, int pval, vec3 center);
-
-void build_hermite_curve(vec4 color_top, vec4 color_bot, Shape* shape, Shape* tan, Shape* d, Shape* p, bool tg, int pval, vec3 center);

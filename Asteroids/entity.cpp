@@ -15,6 +15,8 @@ Entity::Entity()
 	yShiftValue = 0.0f;
 	xScaleValue = DEFAULT_SIZE;
 	yScaleValue = DEFAULT_SIZE;
+	dx = 0.0f;
+	dy = 0.0f;
 	angle = 0.0f;
 }
 
@@ -163,7 +165,7 @@ float Entity::getYScaleValue()
 	return yScaleValue;
 }
 
-float Entity::getangle()
+float Entity::getAngle()
 {
 	return angle;
 }
@@ -188,7 +190,7 @@ void Entity::setYScaleValue(float value)
 	yScaleValue = value;
 }
 
-void Entity::setangle(float value)
+void Entity::setAngle(float value)
 {
 	angle = value;
 }
@@ -241,16 +243,45 @@ Spaceship::Spaceship()
 {
 	alive = true;
 	size = 1.0f;
-	vec4 color1 = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	vec4 color2 = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	createPolygonalShape(createTriangle(size), color1, color2);
+	dy = 0.0f;
+	dx = 0.0f;
 }
 
-void Spaceship::updatePosition()
+void Entity::setDx(float value)
 {
-	// TODO: implementare movimento in base alla velocit� della spaceship
-	// xShiftValue += xShift;
-	// yShiftValue += yShift;
+	dx = value;
+}
+
+void Entity::setDy(float value)
+{
+	dy = value;
+}
+
+float Entity::getDx()
+{
+	return dx;
+}
+
+float Entity::getDy()
+{
+	return dy;
+}
+
+void Entity::updatePosition()
+{
+	xShiftValue += dx;
+	yShiftValue += dy;
+	wrapEntity(this);
+}
+
+void Spaceship::rotateHitbox()
+{
+	vec4 t1 = vec4(hitbox.cornerBot.x, hitbox.cornerTop.y, 0.0f, 1.0f);
+	vec4 b1 = vec4(hitbox.cornerTop.x, hitbox.cornerBot.y, 0.0f, 1.0f);
+	mat4 model = mat4(1.0);
+	model = rotate(model, radians(-90.0f), vec3(0.0f, 0.0f, 1.0f));
+	hitbox.cornerTop = model * t1;
+	hitbox.cornerBot = model * b1;
 }
 
 float Spaceship::getSize()
@@ -258,53 +289,96 @@ float Spaceship::getSize()
 	return size;
 }
 
-float Spaceship::setSize(float value)
+void Spaceship::setSize(float value)
 {
 	size = value;
 }
 
-vector<Projectile*> Spaceship::getProjectiles()
-{
-	return projectiles;
-}
+extern vector<Entity*> projectiles;
 
 void Spaceship::shoot()
 {
-	float x = xShiftValue + cos(angle) + xScaleValue;
-	float y = yShiftValue + size + sin(angle) + yScaleValue;
-	// TODO: terzo parametro da determinare in base alla posizione del mouse
-	Projectile* projectile = new Projectile(x, y, );
+	float x = spaceship->getXShiftValue();
+	float y = spaceship->getYShiftValue();
+	Projectile* projectile = new Projectile(x, y, spaceship->getAngle());
+	projectile->initVAO();
 	projectiles.push_back(projectile);
-}
-
-void Spaceship::removeProjectile(int index)
-{
-	for (int i = index; i < projectiles.size() - 1; i++)
-		projectiles[i] = projectiles[i + 1];
-	projectiles.pop_back();
 }
 
 Projectile::Projectile(float x, float y, float angle)
 {
-	m = tan(radians(90.0f + angle));
-	angle = angle;
+	this->angle = angle;
 	xShiftValue = x;
 	yShiftValue = y;
-	xShift = DEFAULT_PROJECTILE_SPEED * cos(radians(90.0f + angle));
-	yShift = m * xShift;
-	float greyScale = 0.3f;
-	createHermiteShape(readPolygonVertices((char*)"projectile.txt"), vec3(0.0f, 0.0f, 0.0f), vec4(greyScale, greyScale, greyScale, 1.0f), vec4(greyScale, greyScale, greyScale, 1.0f));
+	dx = DEFAULT_PROJECTILE_SPEED * cos(radians(90.0f + angle));
+	dy = DEFAULT_PROJECTILE_SPEED * sin(radians(90.0f + angle));
+	createHermiteShape(readPolygonVertices((char*)"projectile.txt"), vec3(0.0f, 0.0f, 0.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	xScaleValue = (float)DEFAULT_SIZE * 2 / 3;
 	yScaleValue = (float)DEFAULT_SIZE * 2 / 3;
 }
 
-void Projectile::updatePosition()
+bool Projectile::isInScreen()
 {
-	xShiftValue += xShift;
-	yShiftValue += yShift;
+	return xShiftValue > 0.0f && xShiftValue < (float)width && yShiftValue > 0.0f && yShiftValue < (float)height;
 }
 
 Asteroid::Asteroid()
 {
 	alive = true;
+	dx = ((float)(rand() % 5 - 1));
+	dy = ((float)(rand() % 5 - 1));
+	xScaleValue = DEFAULT_SIZE * 3;
+	yScaleValue = DEFAULT_SIZE * 3;
+	isSplit = false;
+}
+
+void Asteroid::split()
+{
+	vec4 color1 = vec4(0.7f, 0.0f, 0.7f, 1.0f);
+	vec4 color2 = vec4(0.7f, 0.7f, 0.7f, 1.0f);
+	char* controlPointsFile = (char*)"asteroid.txt";
+	vector<vec3> controlPoints = readPolygonVertices(controlPointsFile);
+
+	// Creare due nuovi asteroidi con dimensioni ridotte
+	Asteroid* asteroid1 = new Asteroid();
+	asteroid1->createHermiteShape(controlPoints, vec3(0.0f, 0.0f, 0.0f), color1, color2);
+	asteroid1->xScaleValue = DEFAULT_SIZE * 3 / 2;
+	asteroid1->yScaleValue = DEFAULT_SIZE * 3 / 2;
+	asteroid1->isSplit = true;
+
+	Asteroid* asteroid2 = new Asteroid();
+	asteroid2->createHermiteShape(controlPoints, vec3(0.0f, 0.0f, 0.0f), color1, color2);
+	asteroid2->xScaleValue = DEFAULT_SIZE * 3 / 2;
+	asteroid2->yScaleValue = DEFAULT_SIZE * 3 / 2;
+	asteroid2->isSplit = true;
+
+	// Impostare le posizioni dei nuovi asteroidi sulla posizione dell'asteroide corrente
+	asteroid1->xShiftValue = this->xShiftValue;
+	asteroid1->yShiftValue = this->yShiftValue;
+	asteroid2->xShiftValue = this->xShiftValue;
+	asteroid2->yShiftValue = this->yShiftValue;
+
+	// Impostare direzioni casuali per i nuovi asteroidi
+	asteroid1->dx = ((float)(rand() % 6 + 1));
+	asteroid1->dy = ((float)(rand() % 6 + 1));
+	asteroid2->dx = ((float)(rand() % 6 + 1));
+	asteroid2->dy = ((float)(rand() % 6 + 1));
+
+	// Creare la forma degli asteroidi
+	asteroid1->initVAO();
+	asteroid2->initVAO();
+
+	// Aggiungere i nuovi asteroidi all'array asteroids
+	asteroids.push_back(asteroid1);
+	asteroids.push_back(asteroid2);
+}
+
+bool Asteroid::getIsSplit()
+{
+	return isSplit;
+}
+
+void Projectile::changeStatus()
+{
+	alive = alive ? false : true;
 }

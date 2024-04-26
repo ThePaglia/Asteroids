@@ -37,3 +37,5 @@ vector<vec3> createHeart(float rx, float ry, int precision);
 void create_butterfly(float cx, float cy, float rx, float ry, Shape* shape, vec4 color1, vec4 color2);
 
 vector<vec3> createTriangle(float size);
+
+vector<vec3> createRectangle(float width, float height);

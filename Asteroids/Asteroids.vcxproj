@@ -102,12 +102,13 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,9 +132,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entity.h" />
+    <ClInclude Include="enviromentCreator.h" />
     <ClInclude Include="geometry.h" />
     <ClInclude Include="hermite.h" />
     <ClInclude Include="hermiteFromFile.h" />
+    <ClInclude Include="interaction.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="ShaderMaker.h" />
     <ClInclude Include="textCreator.h" />
@@ -141,9 +144,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="entity.cpp" />
+    <ClCompile Include="enviromentCreator.cpp" />
     <ClCompile Include="geometry.cpp" />
     <ClCompile Include="hermite.cpp" />
     <ClCompile Include="hermiteFromFile.cpp" />
+    <ClCompile Include="interaction.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="ShaderMaker.cpp" />
     <ClCompile Include="textCreator.cpp" />
     <ClCompile Include="VAO_manager.cpp" />

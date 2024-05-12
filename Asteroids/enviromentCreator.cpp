@@ -1,12 +1,15 @@
 #include "enviromentCreator.h"
 
+#define MAX_SPEED 3
+#define NUMBER_OF_ASTEROIDS 5
+
 vector<Entity*> createAsteroids(char* controlPointsFile)
 {
 	vector<Entity*> asteroids;
 	vec4 color1 = vec4(0.5f, 0.0f, 0.5f, 1.0f);
 	vec4 color2 = vec4(0.5f, 0.5f, 0.5f, 1.0f);
 	vector<vec3> controlPoints = readPolygonVertices(controlPointsFile);
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < NUMBER_OF_ASTEROIDS; i++)
 	{
 		Asteroid* asteroid = new Asteroid();
 		asteroid->createHermiteShape(controlPoints, vec3(0.0f, 0.0f, 0.0f), color1, color2);
@@ -15,8 +18,9 @@ vector<Entity*> createAsteroids(char* controlPointsFile)
 		float y = (float)(rand() % height);
 		asteroid->setXShiftValue(x);
 		asteroid->setYShiftValue(y);
-		asteroid->setDx((float)(rand() % 6 + 1));
-		asteroid->setDy((float)(rand() % 6 + 1));
+		// Randomize the asteroid's speed
+		asteroid->setDx((float)(rand() % MAX_SPEED + 1));
+		asteroid->setDy((float)(rand() % MAX_SPEED + 1));
 		asteroids.push_back(asteroid);
 	}
 	return asteroids;

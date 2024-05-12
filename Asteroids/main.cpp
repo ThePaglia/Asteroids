@@ -90,7 +90,6 @@ void gameOver(char* text)
 	renderText(programID_text, Projection, str, textVAO, textVBO, width / 2 - str.length() * 10.0f, height / 2, 1.0f, vec3(1.0f, 0.0f, 0.0f));
 }
 
-// TODO: Gestire la logica di collisione e suddivisione degli asteroidi in base alla grandezza
 void update(int value)
 {
 	int i = 0;
@@ -187,6 +186,8 @@ void drawScene(void)
 		gameOver((char*)"YOU LOSE");
 	string str = "Asteroids left: " + to_string(asteroids.size());
 	renderText(programID_text, Projection, str, textVAO, textVBO, width - str.length() * 10.0f, height - 20.0f, 0.5f, vec3(1.0f, 0.0f, 0.0f));
+	str = "Points: " + to_string(spaceship->getPoints());
+	renderText(programID_text, Projection, str, textVAO, textVBO, width / 2, height - 20.0f, 0.5f, vec3(1.0f, 0.0f, 0.0f));
 	glutSwapBuffers();
 	glUseProgram(programID);
 }

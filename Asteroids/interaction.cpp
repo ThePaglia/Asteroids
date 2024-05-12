@@ -2,9 +2,8 @@
 #include <math.h>
 #include <algorithm>
 
-#define SHIFT_VALUE 10.0f
 #define ACCELERATION 1.0f
-#define MAX_SPEED 7.0f
+#define MAX_SPEED 5.0f
 #define PI 3.14159265358979323846
 
 void moveSpaceship()
@@ -65,6 +64,7 @@ bool checkEnemyCollision(Entity* entity)
 			if (asteroid && !asteroid->getIsSplit()) {
 				asteroid->split();
 			}
+			spaceship->addPoints(asteroids[i]->getPoints());
 			delete(asteroids[i]);
 			asteroids.erase(asteroids.begin() + i);
 			i--;

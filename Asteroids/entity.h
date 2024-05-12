@@ -42,6 +42,7 @@ public:
 	float angle;			  // Valore di rotazione
 	bool backgroundComponent; // true se fa parte dello sfondo, false altrimenti
 	bool alive;				  // true se l'entit� � viva, false altrimenti
+	int points;
 
 public:
 	Entity();
@@ -80,13 +81,15 @@ public:
 	void die();
 	bool isAlive();
 	void updatePosition();
+	int getPoints();
+	void addPoints(int value);
 };
 
 class Spaceship : public Entity
 {
 private:
 	float size;
-
+	int points;
 public:
 	Spaceship();
 	float getSize();
@@ -107,9 +110,10 @@ class Asteroid : public Entity
 {
 private:
 	bool isSplit;
-
 public:
 	Asteroid();
+	int getPoints();
+	void setPoints(int value);
 	void split();
 	bool getIsSplit();
 };

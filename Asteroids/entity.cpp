@@ -245,6 +245,17 @@ Spaceship::Spaceship()
 	size = 1.0f;
 	dy = 0.0f;
 	dx = 0.0f;
+	points = 0;
+}
+
+int Entity::getPoints()
+{
+	return points;
+}
+
+void Entity::addPoints(int value)
+{
+	points += value;
 }
 
 void Entity::setDx(float value)
@@ -325,11 +336,10 @@ bool Projectile::isInScreen()
 Asteroid::Asteroid()
 {
 	alive = true;
-	dx = ((float)(rand() % 5 - 1));
-	dy = ((float)(rand() % 5 - 1));
 	xScaleValue = DEFAULT_SIZE * 3;
 	yScaleValue = DEFAULT_SIZE * 3;
 	isSplit = false;
+	points = 1000;
 }
 
 void Asteroid::split()
@@ -345,12 +355,14 @@ void Asteroid::split()
 	asteroid1->xScaleValue = DEFAULT_SIZE * 3 / 2;
 	asteroid1->yScaleValue = DEFAULT_SIZE * 3 / 2;
 	asteroid1->isSplit = true;
+	asteroid1->points = 500;
 
 	Asteroid* asteroid2 = new Asteroid();
 	asteroid2->createHermiteShape(controlPoints, vec3(0.0f, 0.0f, 0.0f), color1, color2);
 	asteroid2->xScaleValue = DEFAULT_SIZE * 3 / 2;
 	asteroid2->yScaleValue = DEFAULT_SIZE * 3 / 2;
 	asteroid2->isSplit = true;
+	asteroid2->points = 500;
 
 	// Impostare le posizioni dei nuovi asteroidi sulla posizione dell'asteroide corrente
 	asteroid1->xShiftValue = this->xShiftValue;
@@ -359,10 +371,10 @@ void Asteroid::split()
 	asteroid2->yShiftValue = this->yShiftValue;
 
 	// Impostare direzioni casuali per i nuovi asteroidi
-	asteroid1->dx = ((float)(rand() % 6 + 1));
-	asteroid1->dy = ((float)(rand() % 6 + 1));
-	asteroid2->dx = ((float)(rand() % 6 + 1));
-	asteroid2->dy = ((float)(rand() % 6 + 1));
+	asteroid1->dx = ((float)(rand() % 3 + 1));
+	asteroid1->dy = ((float)(rand() % 3 + 1));
+	asteroid2->dx = ((float)(rand() % 3 + 1));
+	asteroid2->dy = ((float)(rand() % 3 + 1));
 
 	// Creare la forma degli asteroidi
 	asteroid1->initVAO();
@@ -376,6 +388,16 @@ void Asteroid::split()
 bool Asteroid::getIsSplit()
 {
 	return isSplit;
+}
+
+int Asteroid::getPoints()
+{
+	return points;
+}
+
+void Asteroid::setPoints(int value)
+{
+	points = value;
 }
 
 void Projectile::changeStatus()

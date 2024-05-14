@@ -39,7 +39,7 @@ void INIT_SHADER(void)
 
 	programID_text = ShaderMaker::createProgram(vertexShader, fragmentShader);
 }
-
+// Inizializzazione dei VAO per la scena
 void INIT_VAO(void)
 {
 	spaceshipVector = createSpaceship(spaceship);
@@ -150,7 +150,7 @@ void update(int value)
 	}
 	glutPostRedisplay();
 }
-
+// Funzione per disegnare la scena
 void drawScene(void)
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

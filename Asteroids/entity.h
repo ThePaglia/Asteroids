@@ -22,7 +22,7 @@ class Entity;
 class Spaceship;
 class Projectile;
 class Asteroid;
-
+// Classe che rappresenta un'entità all'interno del gioco
 class Entity
 {
 public:
@@ -84,7 +84,7 @@ public:
 	int getPoints();
 	void addPoints(int value);
 };
-
+// Classe che rappresenta la navicella spaziale
 class Spaceship : public Entity
 {
 private:
@@ -97,7 +97,7 @@ public:
 	void shoot();
 	void rotateHitbox();
 };
-
+// Classe che rappresenta un proiettile
 class Projectile : public Entity
 {
 public:
@@ -105,7 +105,7 @@ public:
 	bool isInScreen();
 	void changeStatus();
 };
-
+// Classe che rappresenta un asteroide
 class Asteroid : public Entity
 {
 private:

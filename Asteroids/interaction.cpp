@@ -5,14 +5,25 @@
 #define ACCELERATION 1.0f
 #define MAX_SPEED 5.0f
 #define PI 3.14159265358979323846
-
+// Funzione per gestire il movimento della navicella
 void moveSpaceship()
 {
 	spaceship->setXShiftValue(spaceship->getXShiftValue() + spaceship->getDx());
 	spaceship->setYShiftValue(spaceship->getYShiftValue() + spaceship->getDy());
 	wrapEntity(spaceship);
 }
-
+/**
+ * This function handles keyboard input for controlling the spaceship.
+ *
+ * The function first calculates the current speed of the spaceship.
+ * Then, depending on the key that was pressed, it performs the following actions:
+ *
+ * 'w': Accelerates the spaceship in the direction it is currently facing. If this would result in a speed greater than MAX_SPEED, the speed is capped at MAX_SPEED.
+ * 's': Decelerates the spaceship. If this would result in a speed less than 0, the speed is set to 0.
+ * ' ': Causes the spaceship to shoot.
+ *
+ * Any other key is ignored.
+ */
 void keyboard(unsigned char key, int x, int y)
 {
 	float magnitude = sqrt(spaceship->getDx() * spaceship->getDx() + spaceship->getDy() * spaceship->getDy());
@@ -42,7 +53,7 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 	}
 }
-
+// Funzione per gestire il movimento del mouse
 void mouseMovement(int x, int y)
 {
 	float dx = x - spaceship->getXShiftValue();
@@ -50,7 +61,18 @@ void mouseMovement(int x, int y)
 	float angle = atan2(-dx, dy) * 180 / PI;
 	spaceship->setAngle(angle);
 }
-
+/**
+ * This function checks if the given entity has collided with any of the asteroids.
+ *
+ * The function iterates over all asteroids and checks if the hitbox of the entity overlaps with the hitbox of the asteroid.
+ * If a collision is detected, the function performs the following actions:
+ *
+ * If the asteroid is not a split asteroid, it is split into smaller asteroids.
+ * The points of the asteroid are added to the spaceship's score.
+ * The asteroid is removed from the list of asteroids.
+ *
+ * The function returns true if a collision was detected and false otherwise.
+ */
 bool checkEnemyCollision(Entity* entity)
 {
 	for (int i = 0; i < asteroids.size(); i++)
@@ -73,7 +95,13 @@ bool checkEnemyCollision(Entity* entity)
 	}
 	return false;
 }
-
+/**
+ * This function wraps the position of the entity around the screen.
+ *
+ * The function first calculates the new position of the entity by adding its current shift values to its current position.
+ * Then it checks if the entity has moved past the right, left, top, or bottom edge of the screen.
+ * If the entity has moved past an edge, its position is wrapped around to the opposite edge.
+ */
 void wrapEntity(Entity* entity)
 {
 	float x = entity->getXShiftValue() + entity->getDx();

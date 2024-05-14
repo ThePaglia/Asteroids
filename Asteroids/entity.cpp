@@ -19,7 +19,7 @@ Entity::Entity()
 	dy = 0.0f;
 	angle = 0.0f;
 }
-
+// Crea un'entità con una forma poligonale
 void Entity::createPolygonalShape(vector<vec3> polygonVertices, vec4 color1, vec4 color2)
 {
 	vertices.push_back(vec3(0.0f, 0.0f, 0.0f));
@@ -44,7 +44,7 @@ void Entity::createPolygonalShape(vector<vec3> polygonVertices, vec4 color1, vec
 	hitbox.cornerBot = vec3(xMin, yMin, 0.0f);
 	hitbox.cornerTop = vec3(xMax, yMax, 0.0f);
 }
-
+// Crea un'entità con una forma di Hermite
 void Entity::createHermiteShape(vector<vec3> controlPoints, vec3 center, vec4 color1, vec4 color2)
 {
 	Shape derivative;
@@ -209,7 +209,7 @@ float Entity::getHeight()
 {
 	return hitbox.cornerTop.y - hitbox.cornerBot.y;
 }
-
+// Restituisce la hitbox dell'entità in coordinate del mondo
 Hitbox Entity::getHitboxWorldCoordinates()
 {
 	float xBottom = (float)width / 2 + hitbox.cornerBot.x * xScaleValue + xShiftValue;
@@ -277,7 +277,7 @@ float Entity::getDy()
 {
 	return dy;
 }
-
+// Aggiorna la posizione dell'entità
 void Entity::updatePosition()
 {
 	xShiftValue += dx;
@@ -341,7 +341,7 @@ Asteroid::Asteroid()
 	isSplit = false;
 	points = 1000;
 }
-
+// Dividi l'asteroide in due nuovi asteroidi quando viene colpito
 void Asteroid::split()
 {
 	vec4 color1 = vec4(0.7f, 0.0f, 0.7f, 1.0f);
